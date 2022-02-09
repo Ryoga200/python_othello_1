@@ -40,7 +40,6 @@ def mouse_press(e):
     skip=0
     masu_x=int((e.x-10)/150)+1
     masu_y=int((e.y-10)/150)+1
-    #print(check[masu_y][masu_x])
     isput=0#駒を置けるか調べる変数
     if(masu_x>=masu_y):#ななめ方向にひっくり返すときに用いる
         leftup=masu_y
@@ -86,7 +85,6 @@ def mouse_press(e):
         isputa=0
         for i in range(masu_y-1,0,-1):
             isputa=isablerev(masu_x,i,isputa)
-            #print(isputa)
             if(isputa==2):
                 direction[0][1]=1
                 isput=isput+1
@@ -115,13 +113,11 @@ def mouse_press(e):
                     break
         isputa=0
         if(rightup>0):
-            #print("aafjd")
             for i in range(1,rightup,1):
                 isputa=isablerev(masu_x+i,masu_y-i,isputa)
                 if(isputa==2):
                     direction[0][2]=1
                     isput=isput+1
-                    #print("isputa"+str(isputa))
                     break
                 if(isputa==3):
                     break
@@ -136,7 +132,7 @@ def mouse_press(e):
                 if(isputa==3):
                     break
         isputa=0
-            
+    canvas.delete("error")        
     if(isput>0):
         revable=0
         if(direction[1][2]==1):
@@ -153,13 +149,8 @@ def mouse_press(e):
         revable=0
         if(direction[2][1]==1):
             for i in range(masu_y,8,1):
-                #print(revable)
                 revable,check[i][masu_x]=reverse(masu_x,i,revable)
-                #print("checkis"+str(check[4][2]))
-                #print("abcd")
-                #print(i)
                 if(revable==2):
-                    #print("break")
                     break
         revable=0
         if(direction[0][1]==1):
@@ -169,7 +160,6 @@ def mouse_press(e):
                     break
         revable=0
         if(direction[0][0]==1):
-            #print("ac")
             for i in range(0,leftup,1):
                 revable,check[masu_y-i][masu_x-i]=reverse(masu_x-i,masu_y-i,revable)
                 if(revable==2):
@@ -192,21 +182,17 @@ def mouse_press(e):
                 revable,check[masu_y+i][masu_x-i]=reverse(masu_x-i,masu_y+i,revable)
                 if(revable==2):
                     break
-        #print("beforeplayer"+str(player)+str(opponent))
         change()
-        #print("afterplayer"+str(player)+str(opponent))
         for i in range(0,3,1):
             for j in range (0,3,1):
                 direction[i][j]=0
-        #for i in range(0,8,1):
-            #for j in range (0,8,1):
-                #print(check[i][j], end='')
-            #print("\n")
+    else:
+        fnt = ("Times New Roman", 20)
+        canvas.create_text(850, 1300, text="そこには置けません", fill="black", font=fnt, tag="error")
 def isableput():
     isputb=0
     for a in range(1,9,1):
         for b in range(1,9,1):
-            #print(check[a][b])
             isput=0#駒を置けるか調べる変数
             if(b>=a):#ななめ方向にひっくり返すときに用いる
                 leftup=a
@@ -281,13 +267,11 @@ def isableput():
                             break
                 isputa=0
                 if(rightup>0):
-                    #print("aafjd")
                     for i in range(1,rightup,1):
                         isputa=isablerev(b+i,a-i,isputa)
                         if(isputa==2):
                             direction[0][2]=1
                             isput=isput+1
-                            #print("isputa"+str(isputa))
                             break
                         if(isputa==3):
                             break
@@ -325,7 +309,6 @@ def change():
     opponent=tmp
     skip=skip+1
     if(skip>=2):
-        print("intheend")
         finaldeal()
     else:
         if(isableput()==0):
@@ -354,12 +337,9 @@ def oku():
         for b in range(1,9,1):
             canvas.create_text(-70+150*b,-70+150*a,text=koma[check[a][b]],font=("Hleventica",50),tag="koma")
 def isablerev(x,y,isputa):
-    #print("xis"+str(x)+"yis"+str(y))
     if(check[y][x]==opponent):
-        #print("num")
         isputa=1
     if(check[y][x]==player and isputa==1):
-        #print("player is "+str(player))
         isputa=2
     if(check[y][x]==player and isputa==0):
         isputa=3
@@ -373,7 +353,6 @@ def reverse(x,y,revable):
         revable=1
     if(check[y][x]==player and revable==1):
         revable=2
-    #print("yis"+str(y)+"xis"+str(x)+"checkisa"+str(check[4][2]))
     return revable,tmp
 root.resizable(False,False)
 root.bind("<Motion>",mouse_move)
